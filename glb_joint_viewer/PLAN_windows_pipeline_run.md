@@ -16,7 +16,7 @@ Goal unchanged: run the real grip video `grip_front_1_cropped.mp4` (1080p, 253 f
 ## Stage −1 — Get onto the Windows machine (first steps when session reopens there)
 - Verify we're on Windows + WSL2: `nvidia-smi` (must show RTX 5070 Ti), `wsl --version`, Ubuntu 24.04 present (install if not).
 - `git clone git@github.com:magic-word/sam-body4d.git ~/sam-body4d` (or https). Confirm branch parity with the Mac copy.
-- Get the video into WSL2: copy `grip_front_1_cropped.mp4` to `~/sam-body4d/data/` (from a USB/cloud, or `/mnt/c/...` if already on the PC). Confirm with `ffprobe`.
+- The video is tracked in the repo (LFS) at `~/sam-body4d/assets/videos/grip_front_1_cropped.mp4` — confirm `git lfs install` ran and it's a real file (`ffprobe`), not a pointer stub.
 - Put `HF_TOKEN` in `~/sam-body4d/.env.local` (gated-model access).
 - Confirm **Blender** is installed on Windows with the **MCP add-on** running, so the Stage 4 rig build can drive it from this session.
 
@@ -36,7 +36,7 @@ Goal unchanged: run the real grip video `grip_front_1_cropped.mp4` (1080p, 253 f
 - Config: `completion.enable=false`, `sam_3d_body.batch_size=16`; optionally skip the pyrender overlay (we only need mesh+pose; if kept, set `PYOPENGL_PLATFORM=egl`).
 - **detectron2 bypass (if needed):** single centered subject → seed the human bbox/point manually (or from a SAM-3 mask) and short-circuit `HumanDetector` (`models/sam_3d_body/tools/build_detector.py` / the detect step in `scripts/offline_app.py`); or swap to `ultralytics` YOLO.
 - **Add pose/rig export hook (~20 lines; params already in `utils/mesh_export.py` `PersonExportData`):** per frame dump `pred_joint_coords (127,3)` + `pred_global_rots (127,3,3)` → `poses.npz`; dump canonical rig from loaded `self.mhr` (`mhr_head.py`) — skin weights `(18439×127)`, parents, rest transforms, faces → `mhr_rig.npz`.
-- Run: `python scripts/offline_app.py --input_video data/grip_front_1_cropped.mp4 --output_dir out/`. Sanity-check first frames/overlay for tracking quality. (Trim to the grip-change window first if it shortens runtime.)
+- Run: `python scripts/offline_app.py --input_video assets/videos/grip_front_1_cropped.mp4 --output_dir out/`. Sanity-check first frames/overlay for tracking quality. (Trim to the grip-change window first if it shortens runtime.)
 
 ## Stage 4 — Blender rig + animation (drive Windows Blender via MCP; reuse prior plan)
 - Build 127-bone MHR armature from `mhr_rig.npz` (Z-up −90°X), bind mesh with skin weights, key each pose bone per frame from `poses.npz`. Verify rest + sample frames reproduce pipeline meshes to a few mm; only the right arm moves; cross-check ~33.5° endpoint. Native, editable, IK-able.
@@ -60,8 +60,8 @@ Goal unchanged: run the real grip video `grip_front_1_cropped.mp4` (1080p, 253 f
 - `pyproject.toml`, `Dockerfile` (apt/pip reference + PyOpenGL 3.1.7 Mesa fix), `configs/body4d.yaml` (`completion.enable`, `sam_3d_body.batch_size`, `paths.ckpt_root`)
 - `scripts/setup.py` (checkpoints + gating), `scripts/offline_app.py` (run path, detect step to bypass, export hook site)
 - `utils/mesh_export.py` (`PersonExportData` collects joint_coords/global_rots), `models/sam_3d_body/.../mhr_head.py` (loaded `self.mhr` → rig/weights), `models/sam_3d_body/tools/build_detector.py` (detector to bypass)
-- Source video `grip_front_1_cropped.mp4` (copy into WSL2)
+- Source video `assets/videos/grip_front_1_cropped.mp4` (tracked in repo via LFS)
 - Prior Blender-stage plan: `~/.claude/plans/distributed-orbiting-torvalds.md`
 
 ## Note on continuity
-Plans live under `~/.claude/plans/` per machine — this file is on the Mac. When the session reopens on Windows, the plan content is carried in the conversation; re-save it to the Windows `~/.claude/plans/` if a local copy is wanted. The repo comes via `git clone`; the video and `HF_TOKEN` must be brought over manually.
+Plans live under `~/.claude/plans/` per machine — this file is on the Mac. When the session reopens on Windows, the plan content is carried in the conversation; re-save it to the Windows `~/.claude/plans/` if a local copy is wanted. The repo comes via `git clone` (incl. the video, via LFS); only `HF_TOKEN` must be brought over manually.

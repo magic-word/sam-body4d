@@ -32,13 +32,13 @@ It starts with a **Stage −1** ("when the session reopens on Windows"): verify 
 - **detectron2 is the top risk** (unmaintained; may not build on Blackwell). It's only the *human detector* → bypass with a manual/SAM-3 bbox (single centered subject) or YOLO.
 - **Windows-hostile deps** (`decord`, `pyrender`, `detectron2`) → that's why we use **WSL2**, not native Windows. `pyrender` offscreen needs `PYOPENGL_PLATFORM=egl` (or skip render — we only need mesh+pose).
 - **Gated checkpoints** (`facebook/sam3`, `facebook/sam-3d-body-dinov3` incl. `mhr_model.pt`) need the user's **`HF_TOKEN`** + already-granted access. ~10 GB without Diffusion-VAS.
-- **Bring to the Windows machine manually** (git-ignored): the video `grip_front_1_cropped.mp4` and `HF_TOKEN`. The repo uses **Git LFS** — run `git lfs install` before cloning or binaries arrive as stubs.
+- The source video is **tracked in the repo** at `assets/videos/grip_front_1_cropped.mp4` (Git LFS). Only **`HF_TOKEN`** must be brought over manually (git-ignored). The repo uses **Git LFS** — run `git lfs install` before cloning or binaries (incl. the video) arrive as stubs.
 - **Coordinate frames:** MHR is Y-up; the GLB `HumanMesh` already un-does the camera flip (== raw MHR forward output). For Blender use a fixed −90°-about-X (Y-up→Z-up). The recovered *markers* (`analysis/data/grip2.json`) are in a *different* flipped frame — trust the mesh, not the markers, for framing.
 
 ## Repos & assets
 - GitHub (work tracked here): **https://github.com/magic-word/sam-body4d** (`origin`). HF Space deploy remote: `hf` → `troutmoose/sam-body4d` (paused).
 - This folder `glb_joint_viewer/`: `gripA.glb`/`gripB.glb` (source MHR-template meshes), `index.html` viewer, `renders/`, the Blender scenes (`*.blend`), `analysis/` (scripts + `data/` JSONs + its own README; `restore_to_tmp.sh` rehydrates the analysis), `STATUS_REPORT.md` (the validated report), and the two `PLAN_*.md` runbooks. (This HANDOFF lives at the repo root.)
-- Source video (NOT in repo): `grip_front_1_cropped.mp4` — 1080p, 30 fps, 253 frames, single person.
+- Source video (in repo, LFS): `assets/videos/grip_front_1_cropped.mp4` — 1080p, 30 fps, 253 frames, single person.
 - Pipeline entry: `scripts/offline_app.py`; config `configs/body4d.yaml`; checkpoints via `scripts/setup.py`; per-frame params already collected in `utils/mesh_export.py` (`PersonExportData`); MHR model loaded in `models/sam_3d_body/.../mhr_head.py`.
 
 ## User preferences (from CLAUDE.md / global rules)
