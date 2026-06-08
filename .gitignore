@@ -19,3 +19,6 @@ mhr_smpl_conversion/
 # Large files not needed for inference
 models/diffusion_vas/models/Depth_Anything_V2/assets/teaser.png
 models/diffusion_vas/models/Depth_Anything_V2/metric_depth/dataset/
+
+# Blender auto-backup files
+*.blend1

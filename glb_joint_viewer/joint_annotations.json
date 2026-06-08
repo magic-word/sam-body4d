@@ -1,0 +1,1298 @@
+{
+"annotations": {
+"104": {
+"name": "Chest / upper-spine (arms+neck+spine junction)",
+"confidence": "certain",
+"note": "Graph hub where both arms, head and spine meet."
+},
+"105": {
+"name": "Right shoulder/upper-arm",
+"confidence": "likely",
+"note": "Along arm chain by hop-distance from chest."
+},
+"106": {
+"name": "Right elbow",
+"confidence": "likely",
+"note": "Along arm chain by hop-distance from chest."
+},
+"107": {
+"name": "Right forearm/low-arm",
+"confidence": "likely",
+"note": "Along arm chain by hop-distance from chest."
+},
+"108": {
+"name": "Right WRIST",
+"confidence": "certain",
+"note": "Wrist hub (degree-5, 5 finger chains). L/R validated by user via finger order."
+},
+"132": {
+"name": "Left shoulder/upper-arm",
+"confidence": "likely",
+"note": "Along arm chain by hop-distance from chest."
+},
+"133": {
+"name": "Left elbow",
+"confidence": "likely",
+"note": "Along arm chain by hop-distance from chest."
+},
+"134": {
+"name": "Left forearm/low-arm",
+"confidence": "likely",
+"note": "Along arm chain by hop-distance from chest."
+},
+"135": {
+"name": "Left WRIST",
+"confidence": "certain",
+"note": "Wrist hub (degree-5, 5 finger chains). L/R validated by user via finger order."
+},
+"119": {
+"name": "Right palm / metacarpal hub",
+"confidence": "certain",
+"note": "Metacarpal junction feeding two fingers; validated."
+},
+"127": {
+"name": "Right thumb \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"128": {
+"name": "Right thumb \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"129": {
+"name": "Right thumb \u2014 DIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"130": {
+"name": "Right thumb \u2014 joint-4",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"131": {
+"name": "Right thumb \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"110": {
+"name": "Right pinky \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"111": {
+"name": "Right pinky \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"112": {
+"name": "Right pinky \u2014 DIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"113": {
+"name": "Right pinky \u2014 joint-4",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"114": {
+"name": "Right pinky \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"115": {
+"name": "Right ring \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"116": {
+"name": "Right ring \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"117": {
+"name": "Right ring \u2014 DIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"118": {
+"name": "Right ring \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"120": {
+"name": "Right middle \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"121": {
+"name": "Right middle \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"122": {
+"name": "Right middle \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"123": {
+"name": "Right index \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"124": {
+"name": "Right index \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"125": {
+"name": "Right index \u2014 DIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"126": {
+"name": "Right index \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"137": {
+"name": "Left index \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"138": {
+"name": "Left index \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"139": {
+"name": "Left index \u2014 DIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"140": {
+"name": "Left index \u2014 joint-4",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"141": {
+"name": "Left index \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"142": {
+"name": "Left middle \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"143": {
+"name": "Left middle \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"144": {
+"name": "Left middle \u2014 DIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"145": {
+"name": "Left middle \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"146": {
+"name": "Left palm / metacarpal hub",
+"confidence": "certain",
+"note": "Metacarpal junction feeding two fingers; validated."
+},
+"147": {
+"name": "Left ring \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"148": {
+"name": "Left ring \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"149": {
+"name": "Left ring \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"150": {
+"name": "Left pinky \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"151": {
+"name": "Left pinky \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"152": {
+"name": "Left pinky \u2014 DIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"153": {
+"name": "Left pinky \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"154": {
+"name": "Left thumb \u2014 MCP (knuckle)",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"155": {
+"name": "Left thumb \u2014 PIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"156": {
+"name": "Left thumb \u2014 DIP",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"157": {
+"name": "Left thumb \u2014 joint-4",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"158": {
+"name": "Left thumb \u2014 fingertip",
+"confidence": "certain",
+"note": "Finger identity VALIDATED by user (2026-06-07). Structure topology-proven."
+},
+"159": {
+"name": "Neck / head base",
+"confidence": "certain",
+"note": "Branch from chest toward the head cluster."
+},
+"160": {
+"name": "Head/skull joint",
+"confidence": "likely",
+"note": "Interior head node."
+},
+"161": {
+"name": "Head/skull joint",
+"confidence": "likely",
+"note": "Interior head node."
+},
+"162": {
+"name": "Face feature (eye/ear/nose/jaw?)",
+"confidence": "uncertain",
+"note": "One of the facial landmarks; specific identity not resolved."
+},
+"163": {
+"name": "Head/skull joint",
+"confidence": "likely",
+"note": "Interior head node."
+},
+"164": {
+"name": "Face feature (eye/ear/nose/jaw?)",
+"confidence": "uncertain",
+"note": "One of the facial landmarks; specific identity not resolved."
+},
+"165": {
+"name": "Head/skull joint",
+"confidence": "likely",
+"note": "Interior head node."
+},
+"166": {
+"name": "Head/skull joint",
+"confidence": "likely",
+"note": "Interior head node."
+},
+"167": {
+"name": "Face feature (eye/ear/nose/jaw?)",
+"confidence": "uncertain",
+"note": "One of the facial landmarks; specific identity not resolved."
+},
+"168": {
+"name": "Face feature (eye/ear/nose/jaw?)",
+"confidence": "uncertain",
+"note": "One of the facial landmarks; specific identity not resolved."
+},
+"169": {
+"name": "Head/skull joint",
+"confidence": "likely",
+"note": "Interior head node."
+},
+"170": {
+"name": "Face feature (eye/ear/nose/jaw?)",
+"confidence": "uncertain",
+"note": "One of the facial landmarks; specific identity not resolved."
+},
+"171": {
+"name": "Head/skull joint",
+"confidence": "likely",
+"note": "Interior head node."
+},
+"172": {
+"name": "Face feature (eye/ear/nose/jaw?)",
+"confidence": "uncertain",
+"note": "One of the facial landmarks; specific identity not resolved."
+},
+"173": {
+"name": "Face feature (eye/ear/nose/jaw?)",
+"confidence": "uncertain",
+"note": "One of the facial landmarks; specific identity not resolved."
+},
+"96": {
+"name": "Foot/toe/heel? (leg extremity)",
+"confidence": "uncertain",
+"note": "Leg extremity; specific identity not resolved."
+},
+"97": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"98": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"99": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"100": {
+"name": "Foot/toe/heel? (leg extremity)",
+"confidence": "uncertain",
+"note": "Leg extremity; specific identity not resolved."
+},
+"101": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"102": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"103": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"86": {
+"name": "Pelvis / hip junction",
+"confidence": "likely",
+"note": "Branch point toward the two legs."
+},
+"87": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"88": {
+"name": "Pelvis / hip junction",
+"confidence": "likely",
+"note": "Branch point toward the two legs."
+},
+"89": {
+"name": "Foot/toe/heel? (leg extremity)",
+"confidence": "uncertain",
+"note": "Leg extremity; specific identity not resolved."
+},
+"90": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"91": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"92": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"93": {
+"name": "Foot/toe/heel? (leg extremity)",
+"confidence": "uncertain",
+"note": "Leg extremity; specific identity not resolved."
+},
+"94": {
+"name": "Spine / leg joint",
+"confidence": "likely",
+"note": "Along spine or leg chain."
+},
+"95": {
+"name": "Pelvis / hip junction",
+"confidence": "likely",
+"note": "Branch point toward the two legs."
+}
+},
+"gripA_pos": {
+"86": [
+-0.01149049960076809,
+-1.0568517446517944,
+0.3599992096424103
+],
+"87": [
+0.07701367139816284,
+-1.0446999073028564,
+0.3350227177143097
+],
+"88": [
+0.05178184434771538,
+-0.8427314162254333,
+-0.07959534227848053
+],
+"89": [
+0.02272038534283638,
+-0.6412146091461182,
+-0.48996928334236145
+],
+"90": [
+0.023583725094795227,
+-0.6444210410118103,
+-0.4854828417301178
+],
+"91": [
+0.025014374405145645,
+-0.6341057419776917,
+-0.5193604230880737
+],
+"92": [
+0.0336533784866333,
+-0.688818633556366,
+-0.5451574921607971
+],
+"93": [
+0.04392429068684578,
+-0.7345693111419678,
+-0.6140735745429993
+],
+"94": [
+-0.1012784019112587,
+-1.0478808879852295,
+0.33850160241127014
+],
+"95": [
+-0.12255451828241348,
+-0.8585480451583862,
+-0.08225549757480621
+],
+"96": [
+-0.1301267445087433,
+-0.633788526058197,
+-0.4813617467880249
+],
+"97": [
+-0.12973652780056,
+-0.6373702883720398,
+-0.4771057069301605
+],
+"98": [
+-0.13894149661064148,
+-0.6224195957183838,
+-0.5079126358032227
+],
+"99": [
+-0.15618272125720978,
+-0.6739007830619812,
+-0.535896360874176
+],
+"100": [
+-0.17556150257587433,
+-0.7139394283294678,
+-0.6063903570175171
+],
+"101": [
+-0.011042319238185883,
+-1.0429383516311646,
+0.39568787813186646
+],
+"102": [
+-0.005064377095550299,
+-1.1337625980377197,
+0.4691881239414215
+],
+"103": [
+-0.0062840962782502174,
+-1.2196110486984253,
+0.5507726073265076
+],
+"104": [
+-0.013169283047318459,
+-1.3992582559585571,
+0.6257593631744385
+],
+"105": [
+-0.03766119107604027,
+-1.4847002029418945,
+0.5463482737541199
+],
+"106": [
+-0.1917295753955841,
+-1.4758504629135132,
+0.5625237822532654
+],
+"107": [
+-0.1578293740749359,
+-1.3303841352462769,
+0.3012668192386627
+],
+"108": [
+-0.07861515134572983,
+-1.2366660833358765,
+-0.018947895616292953
+],
+"110": [
+-0.06965111941099167,
+-1.204325556755066,
+-0.023020504042506218
+],
+"111": [
+-0.06511932611465454,
+-1.167047381401062,
+-0.05379040911793709
+],
+"112": [
+-0.0348799042403698,
+-1.1657809019088745,
+-0.05651833489537239
+],
+"113": [
+-0.024167194962501526,
+-1.1817834377288818,
+-0.0472014956176281
+],
+"114": [
+-0.026778852567076683,
+-1.1997802257537842,
+-0.0389016717672348
+],
+"115": [
+-0.07057294994592667,
+-1.176266074180603,
+-0.07421020418405533
+],
+"116": [
+-0.030246762558817863,
+-1.172662377357483,
+-0.07561227679252625
+],
+"117": [
+-0.018829651176929474,
+-1.1931097507476807,
+-0.0598130002617836
+],
+"118": [
+-0.022629404440522194,
+-1.2116912603378296,
+-0.04748668894171715
+],
+"119": [
+-0.07201418280601501,
+-1.1892873048782349,
+-0.0921473503112793
+],
+"120": [
+-0.029251744970679283,
+-1.1762083768844604,
+-0.09891786426305771
+],
+"121": [
+-0.017559848725795746,
+-1.1937928199768066,
+-0.08022546023130417
+],
+"122": [
+-0.022039977833628654,
+-1.2110165357589722,
+-0.06553857773542404
+],
+"123": [
+-0.06390289217233658,
+-1.2124838829040527,
+-0.1036459356546402
+],
+"124": [
+-0.04190099611878395,
+-1.1852095127105713,
+-0.12424661219120026
+],
+"125": [
+-0.02048296481370926,
+-1.1914669275283813,
+-0.10998887568712234
+],
+"126": [
+-0.015109486877918243,
+-1.2051804065704346,
+-0.09355201572179794
+],
+"127": [
+-0.06355902552604675,
+-1.2412843704223633,
+-0.029484156519174576
+],
+"128": [
+-0.05192216858267784,
+-1.2475616931915283,
+-0.04974138364195824
+],
+"129": [
+-0.04453189671039581,
+-1.2386143207550049,
+-0.08105655759572983
+],
+"130": [
+-0.04129704833030701,
+-1.2231273651123047,
+-0.11396948248147964
+],
+"131": [
+-0.0351475365459919,
+-1.216143250465393,
+-0.139043390750885
+],
+"132": [
+0.018298672512173653,
+-1.488114595413208,
+0.5528152585029602
+],
+"133": [
+0.16138331592082977,
+-1.5052227973937988,
+0.6103572249412537
+],
+"134": [
+0.1305028647184372,
+-1.3318986892700195,
+0.3662865459918976
+],
+"135": [
+-0.008896314539015293,
+-1.2316974401474,
+0.06943069398403168
+],
+"137": [
+-0.0034772036597132683,
+-1.2014131546020508,
+0.058891359716653824
+],
+"138": [
+0.008335409685969353,
+-1.1740596294403076,
+0.02289726585149765
+],
+"139": [
+-0.01930629089474678,
+-1.164612054824829,
+0.021487483754754066
+],
+"140": [
+-0.031917914748191833,
+-1.1747825145721436,
+0.034199316054582596
+],
+"141": [
+-0.033318426460027695,
+-1.1903421878814697,
+0.045426443219184875
+],
+"142": [
+0.010131632909178734,
+-1.1883015632629395,
+0.005972257349640131
+],
+"143": [
+-0.024679895490407944,
+-1.170819640159607,
+0.004225254990160465
+],
+"144": [
+-0.04334213584661484,
+-1.180614948272705,
+0.02139713615179062
+],
+"145": [
+-0.051688604056835175,
+-1.1943541765213013,
+0.03608434647321701
+],
+"146": [
+0.006822390481829643,
+-1.203763723373413,
+-0.00841184426099062
+],
+"147": [
+-0.02767244726419449,
+-1.1779096126556396,
+-0.014460040256381035
+],
+"148": [
+-0.04656025394797325,
+-1.1824947595596313,
+0.004488763865083456
+],
+"149": [
+-0.056803882122039795,
+-1.1917588710784912,
+0.0218812208622694
+],
+"150": [
+-0.009101871401071548,
+-1.223002314567566,
+-0.01605089381337166
+],
+"151": [
+-0.02137288637459278,
+-1.1917544603347778,
+-0.03614982217550278
+],
+"152": [
+-0.0429796539247036,
+-1.1870527267456055,
+-0.023483077064156532
+],
+"153": [
+-0.056886348873376846,
+-1.190996766090393,
+-0.007913882844150066
+],
+"154": [
+-0.023252170532941818,
+-1.2321951389312744,
+0.05864139273762703
+],
+"155": [
+-0.03591649606823921,
+-1.2381234169006348,
+0.040025047957897186
+],
+"156": [
+-0.043587084859609604,
+-1.2322441339492798,
+0.009370808489620686
+],
+"157": [
+-0.043724026530981064,
+-1.2192473411560059,
+-0.023286202922463417
+],
+"158": [
+-0.044664353132247925,
+-1.205988883972168,
+-0.04532945156097412
+],
+"159": [
+-0.01864531636238098,
+-1.5066691637039185,
+0.6164577603340149
+],
+"160": [
+-0.02808949165046215,
+-1.6114922761917114,
+0.5931771993637085
+],
+"161": [
+-0.02873953990638256,
+-1.6325477361679077,
+0.5777809619903564
+],
+"162": [
+-0.027552034705877304,
+-1.6279919147491455,
+0.5528398752212524
+],
+"163": [
+-0.023423178121447563,
+-1.604477882385254,
+0.4926980137825012
+],
+"164": [
+-0.028086109086871147,
+-1.623820185661316,
+0.5757337212562561
+],
+"165": [
+-0.028118766844272614,
+-1.630367398262024,
+0.566922128200531
+],
+"166": [
+-0.028023090213537216,
+-1.641518235206604,
+0.5483286380767822
+],
+"167": [
+-0.02730249986052513,
+-1.6423829793930054,
+0.5299609303474426
+],
+"168": [
+-0.026705512776970863,
+-1.6398550271987915,
+0.5194895267486572
+],
+"169": [
+-0.06393516808748245,
+-1.7087749242782593,
+0.538739025592804
+],
+"170": [
+-0.06505714356899261,
+-1.7116965055465698,
+0.522066593170166
+],
+"171": [
+4.475738751352765e-05,
+-1.7127177715301514,
+0.5414320230484009
+],
+"172": [
+0.002195283304899931,
+-1.7158457040786743,
+0.5248949527740479
+],
+"173": [
+-0.04106505960226059,
+-1.798793911933899,
+0.6269186735153198
+]
+},
+"gripB_pos": {
+"86": [
+-0.027879033237695694,
+-1.1223385334014893,
+0.3725784420967102
+],
+"87": [
+0.06015245243906975,
+-1.1124961376190186,
+0.349208801984787
+],
+"88": [
+0.04093603789806366,
+-0.9074273705482483,
+-0.06705795228481293
+],
+"89": [
+0.018286054953932762,
+-0.703682541847229,
+-0.4805510342121124
+],
+"90": [
+0.018961824476718903,
+-0.7068209648132324,
+-0.47620633244514465
+],
+"91": [
+0.02085418626666069,
+-0.6966666579246521,
+-0.5101087093353271
+],
+"92": [
+0.026146452873945236,
+-0.7514484524726868,
+-0.5366498231887817
+],
+"93": [
+0.03338992968201637,
+-0.7966650128364563,
+-0.6060823202133179
+],
+"94": [
+-0.11584840714931488,
+-1.1113641262054443,
+0.34948015213012695
+],
+"95": [
+-0.13083040714263916,
+-0.9209516048431396,
+-0.07386317849159241
+],
+"96": [
+-0.1299683004617691,
+-0.691847562789917,
+-0.4745037853717804
+],
+"97": [
+-0.12970218062400818,
+-0.6953558325767517,
+-0.47041040658950806
+],
+"98": [
+-0.1382402777671814,
+-0.6788303256034851,
+-0.5005975961685181
+],
+"99": [
+-0.15839312970638275,
+-0.7285386919975281,
+-0.5298084020614624
+],
+"100": [
+-0.1798826903104782,
+-0.7655534148216248,
+-0.6011258363723755
+],
+"101": [
+-0.02773410826921463,
+-1.1083407402038574,
+0.40823662281036377
+],
+"102": [
+-0.025056246668100357,
+-1.1988778114318848,
+0.4826437830924988
+],
+"103": [
+-0.0304835494607687,
+-1.2857497930526733,
+0.5632990002632141
+],
+"104": [
+-0.04778662696480751,
+-1.4678535461425781,
+0.631354033946991
+],
+"105": [
+-0.07206689566373825,
+-1.5487147569656372,
+0.547221302986145
+],
+"106": [
+-0.22393472492694855,
+-1.5271716117858887,
+0.5566307902336121
+],
+"107": [
+-0.17341454327106476,
+-1.3628793954849243,
+0.306788831949234
+],
+"108": [
+-0.08968251943588257,
+-1.279482126235962,
+-0.01692444086074829
+],
+"110": [
+-0.06304679065942764,
+-1.2588591575622559,
+-0.020417731255292892
+],
+"111": [
+-0.03755684569478035,
+-1.2302066087722778,
+-0.04979756847023964
+],
+"112": [
+-0.011775803752243519,
+-1.245537281036377,
+-0.04966786876320839
+],
+"113": [
+-0.006537752225995064,
+-1.2645751237869263,
+-0.04159950464963913
+],
+"114": [
+-0.009658503346145153,
+-1.2829793691635132,
+-0.03444121032953262
+],
+"115": [
+-0.04798683896660805,
+-1.232917070388794,
+-0.07057186961174011
+],
+"116": [
+-0.01605842635035515,
+-1.257750153541565,
+-0.07010556757450104
+],
+"117": [
+-0.022137202322483063,
+-1.2802695035934448,
+-0.054259806871414185
+],
+"118": [
+-0.035930510610342026,
+-1.2934587001800537,
+-0.04209841042757034
+],
+"119": [
+-0.05752589926123619,
+-1.2414442300796509,
+-0.08873370289802551
+],
+"120": [
+-0.01813993602991104,
+-1.2636559009552002,
+-0.08960940688848495
+],
+"121": [
+-0.023114141076803207,
+-1.2848517894744873,
+-0.0715317577123642
+],
+"122": [
+-0.0363142266869545,
+-1.2972992658615112,
+-0.05731361731886864
+],
+"123": [
+-0.06542067229747772,
+-1.2640999555587769,
+-0.10131032764911652
+],
+"124": [
+-0.031918514519929886,
+-1.2566558122634888,
+-0.12294343113899231
+],
+"125": [
+-0.020757978782057762,
+-1.2771835327148438,
+-0.11047571152448654
+],
+"126": [
+-0.0263088196516037,
+-1.292054533958435,
+-0.09508714824914932
+],
+"127": [
+-0.08073845505714417,
+-1.2915068864822388,
+-0.028401553630828857
+],
+"128": [
+-0.07552562654018402,
+-1.3025896549224854,
+-0.049361929297447205
+],
+"129": [
+-0.06608959287405014,
+-1.3018126487731934,
+-0.08135166019201279
+],
+"130": [
+-0.056074243038892746,
+-1.2940644025802612,
+-0.11551405489444733
+],
+"131": [
+-0.05073234438896179,
+-1.2966527938842773,
+-0.1416265070438385
+],
+"132": [
+-0.016817936673760414,
+-1.5553771257400513,
+0.5566090941429138
+],
+"133": [
+0.11900557577610016,
+-1.5823618173599243,
+0.6232451796531677
+],
+"134": [
+0.10842593014240265,
+-1.4032541513442993,
+0.37876200675964355
+],
+"135": [
+-0.011166887357831001,
+-1.2948936223983765,
+0.07427624613046646
+],
+"137": [
+-0.0038487808778882027,
+-1.2651933431625366,
+0.06325244158506393
+],
+"138": [
+0.009994883090257645,
+-1.23918616771698,
+0.027262764051556587
+],
+"139": [
+-0.01666902005672455,
+-1.2282278537750244,
+0.025611096993088722
+],
+"140": [
+-0.03140471130609512,
+-1.2359559535980225,
+0.03765233978629112
+],
+"141": [
+-0.037089891731739044,
+-1.2501925230026245,
+0.04928846284747124
+],
+"142": [
+0.011299202218651772,
+-1.2539066076278687,
+0.01025553047657013
+],
+"143": [
+-0.021857324987649918,
+-1.2337658405303955,
+0.0068235513754189014
+],
+"144": [
+-0.04273878037929535,
+-1.2402873039245605,
+0.02289462648332119
+],
+"145": [
+-0.054947011172771454,
+-1.2512699365615845,
+0.037216149270534515
+],
+"146": [
+0.007240410894155502,
+-1.2695249319076538,
+-0.003781441831961274
+],
+"147": [
+-0.023472795262932777,
+-1.240172266960144,
+-0.013326023705303669
+],
+"148": [
+-0.04451264068484306,
+-1.2407827377319336,
+0.003973668906837702
+],
+"149": [
+-0.05792558193206787,
+-1.246775507926941,
+0.0206056609749794
+],
+"150": [
+-0.009660204872488976,
+-1.2879478931427002,
+-0.011207399889826775
+],
+"151": [
+-0.02001284249126911,
+-1.258009433746338,
+-0.03406069800257683
+],
+"152": [
+-0.041713811457157135,
+-1.2490195035934448,
+-0.024151628836989403
+],
+"153": [
+-0.057724304497241974,
+-1.2476260662078857,
+-0.01019252184778452
+],
+"154": [
+-0.025361089035868645,
+-1.2947620153427124,
+0.06327686458826065
+],
+"155": [
+-0.038521748036146164,
+-1.2997478246688843,
+0.044616930186748505
+],
+"156": [
+-0.045166198164224625,
+-1.29189932346344,
+0.014190378598868847
+],
+"157": [
+-0.04326917976140976,
+-1.277794599533081,
+-0.01786906085908413
+],
+"158": [
+-0.04269608482718468,
+-1.2641233205795288,
+-0.03971933200955391
+],
+"159": [
+-0.058276060968637466,
+-1.5745494365692139,
+0.6173552870750427
+],
+"160": [
+-0.0724220871925354,
+-1.6740280389785767,
+0.5834898352622986
+],
+"161": [
+-0.07345887273550034,
+-1.6937236785888672,
+0.5664063692092896
+],
+"162": [
+-0.070379339158535,
+-1.6873443126678467,
+0.5420446991920471
+],
+"163": [
+-0.06087571009993553,
+-1.659558892250061,
+0.4843710660934448
+],
+"164": [
+-0.07210659980773926,
+-1.6849308013916016,
+0.5651204586029053
+],
+"165": [
+-0.07200221717357635,
+-1.6907508373260498,
+0.5558151602745056
+],
+"166": [
+-0.07144387066364288,
+-1.7003988027572632,
+0.536407470703125
+],
+"167": [
+-0.06960535794496536,
+-1.6998825073242188,
+0.5181058645248413
+],
+"168": [
+-0.0681745633482933,
+-1.6965960264205933,
+0.5079282522201538
+],
+"169": [
+-0.11098708212375641,
+-1.7640173435211182,
+0.5192431211471558
+],
+"170": [
+-0.11122667044401169,
+-1.765550971031189,
+0.502349853515625
+],
+"171": [
+-0.04770639166235924,
+-1.7726463079452515,
+0.525352954864502
+],
+"172": [
+-0.04470939561724663,
+-1.7746199369430542,
+0.5087701082229614
+],
+"173": [
+-0.09975028038024902,
+-1.8620169162750244,
+0.6009324789047241
+]
+}
+}

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAM-3D-Body GLB Joint Viewer</title>
+<style>
+  :root { --bg:#1e1f22; --panel:#26282c; --line:#3a3d42; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; overflow:hidden; font-family:system-ui,Segoe UI,Roboto,sans-serif; color:#e8e8ea; background:var(--bg); }
+  #app { display:flex; height:100%; }
+  #view { position:relative; flex:1; min-width:0; }
+  #canvas-wrap { position:absolute; inset:0; }
+  #side { width:330px; background:var(--panel); border-left:1px solid var(--line); display:flex; flex-direction:column; }
+  h1 { font-size:14px; margin:0; padding:12px 14px; border-bottom:1px solid var(--line); font-weight:600; letter-spacing:.2px; }
+  .controls { padding:10px 14px; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 12px; font-size:12px; }
+  .controls label { display:flex; align-items:center; gap:5px; cursor:pointer; user-select:none; }
+  .seg { display:flex; gap:0; border:1px solid var(--line); border-radius:6px; overflow:hidden; }
+  .seg button { background:transparent; color:#cfd2d6; border:0; padding:5px 12px; cursor:pointer; font-size:12px; }
+  .seg button.active { background:#3b6ea5; color:#fff; }
+  .legend { padding:8px 14px; border-bottom:1px solid var(--line); font-size:12px; display:flex; flex-direction:column; gap:4px; }
+  .dot { display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:7px; vertical-align:-1px; }
+  .list { overflow:auto; flex:1; padding:4px 0; }
+  .grp-h { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:#9aa0a6; padding:10px 14px 4px; }
+  .row { padding:5px 14px; font-size:12px; cursor:pointer; display:flex; gap:8px; align-items:baseline; border-left:3px solid transparent; }
+  .row:hover { background:#2f3236; }
+  .row.sel { background:#34465c; border-left-color:#6fb0ff; }
+  .row .id { color:#7e858c; min-width:26px; font-variant-numeric:tabular-nums; }
+  .row .nm { flex:1; }
+  #hud { position:absolute; left:12px; top:12px; background:rgba(20,21,23,.82); padding:9px 12px; border-radius:8px; font-size:12px; max-width:340px; line-height:1.45; pointer-events:none; border:1px solid var(--line); }
+  #hud b { color:#fff; }
+  .label { font-size:10px; padding:1px 5px; border-radius:4px; background:rgba(15,16,18,.7); white-space:nowrap; pointer-events:none; border:1px solid rgba(255,255,255,.07); opacity:.92; }
+  .label.hov { background:rgba(40,52,70,.98); border-color:#6fb0ff; opacity:1; z-index:5; font-size:11px; }
+  .badge { font-size:10px; padding:1px 5px; border-radius:8px; font-weight:600; }
+  small.note { color:#9aa0a6; }
+  a { color:#6fb0ff; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="view">
+    <div id="canvas-wrap"></div>
+    <div id="hud">Loading…</div>
+  </div>
+  <div id="side">
+    <h1>SAM‑3D‑Body · Joint Annotations</h1>
+    <div class="controls">
+      <div class="seg" id="gripSeg">
+        <button data-grip="A" class="active">Grip A</button>
+        <button data-grip="B">Grip B</button>
+      </div>
+      <label><input type="checkbox" id="cMesh" checked> Body mesh</label>
+      <label><input type="checkbox" id="cBones" checked> Bone links</label>
+      <label><input type="checkbox" id="cLabels" checked> Labels</label>
+      <label><input type="checkbox" id="cAllLabels"> All labels</label>
+    </div>
+    <div class="controls" style="border-bottom:1px solid var(--line)">
+      <label><input type="checkbox" class="fconf" value="certain" checked> <span class="dot" style="background:#39d353"></span>Certain</label>
+      <label><input type="checkbox" class="fconf" value="likely" checked> <span class="dot" style="background:#f0a23b"></span>Likely</label>
+      <label><input type="checkbox" class="fconf" value="uncertain" checked> <span class="dot" style="background:#e5534b"></span>Uncertain</label>
+    </div>
+    <div class="legend">
+      <div><b>How to read this:</b></div>
+      <div><small class="note">Recovered from the GLB's 88 joint markers (no names/skin in the file). “Certain” = structural role proven by graph topology. “Likely” = inferred by anatomy/position. “Uncertain” = best‑guess identity.</small></div>
+    </div>
+    <div class="list" id="list"></div>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+const CONF = {
+  certain:  { color: 0x39d353, label:'CERTAIN' },
+  likely:   { color: 0xf0a23b, label:'LIKELY' },
+  uncertain:{ color: 0xe5534b, label:'UNCERTAIN' },
+};
+
+const wrap = document.getElementById('canvas-wrap');
+const hud = document.getElementById('hud');
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1e1f22);
+const camera = new THREE.PerspectiveCamera(45, 1, 0.001, 100);
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(devicePixelRatio);
+wrap.appendChild(renderer.domElement);
+
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.top = '0';
+labelRenderer.domElement.style.pointerEvents = 'none';
+wrap.appendChild(labelRenderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x333344, 2.2));
+const dl = new THREE.DirectionalLight(0xffffff, 1.2); dl.position.set(1,2,1.5); scene.add(dl);
+const grid = new THREE.GridHelper(4, 20, 0x444444, 0x333333); scene.add(grid);
+
+let ann = null;
+const loader = new GLTFLoader();
+let current = null; // { group, spheres:[{mesh,id,base,label}], bones:[], mesh }
+let selId = null;
+
+// 48 signed axis-permutation matrices (rotations+reflections) to robustly map
+// annotation (Blender) coords -> the GLB's three.js coords without assuming a convention.
+function permMatrices(){
+  const perms = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
+  const signs = [];
+  for (let a of [1,-1]) for (let b of [1,-1]) for (let c of [1,-1]) signs.push([a,b,c]);
+  const out=[];
+  for (const p of perms) for (const s of signs) out.push({p,s});
+  return out;
+}
+function applyPS(v, ps){ return [ ps.s[0]*v[ps.p[0]], ps.s[1]*v[ps.p[1]], ps.s[2]*v[ps.p[2]] ]; }
+
+function bestMapping(annPos, centroids){
+  // annPos: {id:[x,y,z]} (Blender) ; centroids: [{idx, c:[x,y,z]}] (three.js sphere world centroids)
+  const ids = Object.keys(annPos);
+  const A = ids.map(id=>annPos[id]);
+  const mean = a=>{ const m=[0,0,0]; a.forEach(v=>{m[0]+=v[0];m[1]+=v[1];m[2]+=v[2];}); return m.map(x=>x/a.length); };
+  const cen = arr=>{ const m=mean(arr); return arr.map(v=>[v[0]-m[0],v[1]-m[1],v[2]-m[2]]); };
+  const Ac = cen(A);
+  const C = centroids.map(o=>o.c); const Cc = cen(C);
+  let best=null, bestErr=Infinity, bestPS=null;
+  for (const ps of permMatrices()){
+    const At = Ac.map(v=>applyPS(v,ps));
+    // greedy nearest assignment id->centroid
+    let err=0; const used=new Array(Cc.length).fill(false); const assign={};
+    for (let i=0;i<At.length;i++){
+      let bj=-1, bd=Infinity;
+      for (let j=0;j<Cc.length;j++){ if(used[j])continue;
+        const dx=At[i][0]-Cc[j][0], dy=At[i][1]-Cc[j][1], dz=At[i][2]-Cc[j][2];
+        const d=dx*dx+dy*dy+dz*dz; if(d<bd){bd=d;bj=j;} }
+      used[bj]=true; assign[ids[i]]=centroids[bj].idx; err+=bd;
+    }
+    if(err<bestErr){ bestErr=err; best=assign; bestPS=ps; }
+  }
+  return { assign:best, err:bestErr };
+}
+
+function clear(obj){ obj.traverse(o=>{ if(o.geometry)o.geometry.dispose(); }); scene.remove(obj); }
+
+async function loadGrip(letter){
+  if(current){ clear(current.group); current.labels.forEach(l=>l.element.remove()); }
+  const url = letter==='A' ? 'gripA.glb' : 'gripB.glb';
+  const annPos = letter==='A' ? ann.gripA_pos : ann.gripB_pos;
+  const gltf = await loader.loadAsync(url);
+  const root = gltf.scene;
+  scene.add(root);
+  root.updateWorldMatrix(true,true);
+
+  // classify meshes by vertex count
+  let humanMesh=null; const sphereMeshes=[]; const boneMeshes=[];
+  let maxV=0;
+  root.traverse(o=>{ if(o.isMesh){ const n=o.geometry.attributes.position.count; if(n>maxV)maxV=n; } });
+  const tmp=new THREE.Vector3(), box=new THREE.Box3();
+  root.traverse(o=>{
+    if(!o.isMesh) return;
+    const n=o.geometry.attributes.position.count;
+    if(n===maxV){ humanMesh=o; }
+    else if(n>200){ // joint spheres (439)
+      box.setFromObject(o); const c=box.getCenter(new THREE.Vector3());
+      sphereMeshes.push({mesh:o, c:[c.x,c.y,c.z]});
+    } else { boneMeshes.push(o); }
+  });
+
+  // map spheres -> annotation ids
+  const centroids = sphereMeshes.map((s,i)=>({idx:i, c:s.c}));
+  const { assign, err } = bestMapping(annPos, centroids);
+  const idForSphere = {}; // sphereIndex -> annId
+  for (const annId in assign){ idForSphere[assign[annId]] = annId; }
+
+  // style human mesh
+  if(humanMesh){
+    humanMesh.material = new THREE.MeshStandardMaterial({color:0x9aa3ad, transparent:true, opacity:0.18, roughness:.9, depthWrite:false});
+  }
+  // style bones
+  const boneMat = new THREE.MeshStandardMaterial({color:0x6b7077, roughness:.8});
+  boneMeshes.forEach(b=>{ b.material=boneMat; });
+
+  // recolor spheres + labels
+  const spheres=[]; const labels=[];
+  sphereMeshes.forEach((s,i)=>{
+    const annId = idForSphere[i];
+    const a = annId!=null ? ann.annotations[annId] : null;
+    const conf = a ? a.confidence : 'uncertain';
+    const col = CONF[conf].color;
+    s.mesh.material = new THREE.MeshStandardMaterial({color:col, emissive:col, emissiveIntensity:.35, roughness:.5});
+    // enlarge slightly for visibility
+    s.mesh.renderOrder = 2;
+    const div = document.createElement('div');
+    div.className='label';
+    div.style.color = '#'+col.toString(16).padStart(6,'0');
+    div.textContent = a ? a.name : ('joint '+i);
+    const lbl = new CSS2DObject(div);
+    box.setFromObject(s.mesh); const c=box.getCenter(new THREE.Vector3());
+    lbl.position.copy(c);
+    scene.add(lbl);
+    spheres.push({mesh:s.mesh, id:annId, conf, name:a?a.name:('joint '+i), note:a?a.note:'', center:c, label:lbl, div});
+    labels.push(lbl);
+  });
+
+  current = { group:root, mesh:humanMesh, bones:boneMeshes, spheres, labels };
+
+  // frame camera on spheres
+  const bb = new THREE.Box3();
+  spheres.forEach(s=>bb.expandByPoint(s.center));
+  const center = bb.getCenter(new THREE.Vector3());
+  const size = bb.getSize(new THREE.Vector3()).length();
+  controls.target.copy(center);
+  camera.position.copy(center).add(new THREE.Vector3(size*0.7, size*0.4, size*0.9));
+  camera.near = size/100; camera.far = size*20; camera.updateProjectionMatrix();
+
+  applyFilters(); buildList();
+  hud.innerHTML = `<b>Grip ${letter}</b> · ${spheres.length} joints · mapping error ${(Math.sqrt(err/spheres.length)*1000).toFixed(1)} mm rms<br><small class="note">Hover a point for details. Drag to orbit, scroll to zoom.</small>`;
+}
+
+function activeConfs(){
+  return new Set([...document.querySelectorAll('.fconf:checked')].map(c=>c.value));
+}
+function applyFilters(){
+  if(!current) return;
+  const confs = activeConfs();
+  const showLabels = document.getElementById('cLabels').checked;
+  const allLabels = document.getElementById('cAllLabels').checked;
+  current.spheres.forEach(s=>{
+    const vis = confs.has(s.conf);
+    s.mesh.visible = vis;
+    // certain/likely labels shown by default; uncertain only when "all labels" on or hovered
+    const labelOk = showLabels && vis && (allLabels || s.conf!=='uncertain' || String(s.id)===String(selId));
+    s.label.visible = labelOk;
+  });
+  if(current.mesh) current.mesh.visible = document.getElementById('cMesh').checked;
+  current.bones.forEach(b=> b.visible = document.getElementById('cBones').checked);
+}
+
+function buildList(){
+  const list = document.getElementById('list'); list.innerHTML='';
+  const order=['certain','likely','uncertain'];
+  const groups={certain:[],likely:[],uncertain:[]};
+  current.spheres.forEach(s=> groups[s.conf].push(s));
+  for(const k of order){
+    const h=document.createElement('div'); h.className='grp-h';
+    h.innerHTML = `<span class="dot" style="background:#${CONF[k].color.toString(16).padStart(6,'0')}"></span>${CONF[k].label} · ${groups[k].length}`;
+    list.appendChild(h);
+    groups[k].sort((a,b)=>(+a.id)-(+b.id)).forEach(s=>{
+      const r=document.createElement('div'); r.className='row'; r.dataset.id=s.id;
+      r.innerHTML = `<span class="id">${s.id}</span><span class="nm">${s.name}</span>`;
+      r.onclick=()=>{ selectJoint(s.id); controls.target.copy(s.center);
+        camera.position.copy(s.center).add(new THREE.Vector3(0.12,0.06,0.18)); };
+      list.appendChild(r);
+    });
+  }
+}
+
+const ray=new THREE.Raycaster(); const mouse=new THREE.Vector2();
+function selectJoint(id){
+  selId=id;
+  document.querySelectorAll('.row').forEach(r=>r.classList.toggle('sel', r.dataset.id===String(id)));
+  current.spheres.forEach(x=> x.div.classList.toggle('hov', String(x.id)===String(id)));
+  const s = current.spheres.find(x=>String(x.id)===String(id));
+  if(s){
+    hud.innerHTML = `<b>#${s.id} — ${s.name}</b> <span class="badge" style="background:#${CONF[s.conf].color.toString(16).padStart(6,'0')};color:#111">${CONF[s.conf].label}</span><br><small class="note">${s.note||''}</small>`;
+    applyFilters(); // reveal hovered uncertain label
+  }
+}
+renderer.domElement.addEventListener('pointermove', e=>{
+  if(!current) return;
+  const r=renderer.domElement.getBoundingClientRect();
+  mouse.x=((e.clientX-r.left)/r.width)*2-1; mouse.y=-((e.clientY-r.top)/r.height)*2+1;
+  ray.setFromCamera(mouse,camera);
+  const hits=ray.intersectObjects(current.spheres.filter(s=>s.mesh.visible).map(s=>s.mesh));
+  if(hits.length){ const s=current.spheres.find(x=>x.mesh===hits[0].object); if(s) selectJoint(s.id); }
+});
+
+function resize(){
+  const w=wrap.clientWidth, h=wrap.clientHeight;
+  renderer.setSize(w,h); labelRenderer.setSize(w,h);
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize);
+
+function animate(){ requestAnimationFrame(animate); controls.update();
+  renderer.render(scene,camera); labelRenderer.render(scene,camera); }
+
+document.querySelectorAll('#gripSeg button').forEach(b=> b.onclick=()=>{
+  document.querySelectorAll('#gripSeg button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); loadGrip(b.dataset.grip);
+});
+['cMesh','cBones','cLabels','cAllLabels'].forEach(id=> document.getElementById(id).onchange=applyFilters);
+document.querySelectorAll('.fconf').forEach(c=> c.onchange=()=>{applyFilters();});
+
+(async()=>{
+  ann = await (await fetch('joint_annotations.json')).json();
+  resize(); animate(); await loadGrip('A');
+})();
+</script>
+</body>
+</html>
