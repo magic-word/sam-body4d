@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-> **Resuming the golf-grip 4D animation work?** Read `glb_joint_viewer/HANDOFF.md` first — it has the full context (goal, what's already validated, what to do next, and gotchas).
+> **Resuming the golf-grip 4D animation work?** Read `HANDOFF.md` (repo root) first — it has the full context (goal, what's already validated, what to do next, and gotchas).
 
 ## CLI Command Rules
 

@@ -1,6 +1,6 @@
 # HANDOFF — Golf-grip 4D rigged-animation project (context transfer)
 
-> Read this first if you're a fresh Claude Code agent picking this up (e.g. on the Windows PC). It captures the goal, the journey, what's validated, and exactly what to do next. The step-by-step runbooks are `PLAN_windows_pipeline_run.md` and `PLAN_blender_mhr_rig.md` in this folder.
+> Read this first if you're a fresh Claude Code agent picking this up (e.g. on the Windows PC). It captures the goal, the journey, what's validated, and exactly what to do next. The step-by-step runbooks are `glb_joint_viewer/PLAN_windows_pipeline_run.md` and `glb_joint_viewer/PLAN_blender_mhr_rig.md`.
 
 ## The user & the goal
 The user is a golfer analyzing a **right-hand grip-technique change**. They captured a **video** of themselves performing the change and pulled **two stills** (grip A = "before", grip B = "after") from it. The end goal: a **clean, rigged, editable 3D animation** (Blender, plays in the timeline, ideally IK-able) of the right hand/arm rotating from grip A to grip B — left hand and body held fixed — to visualize/measure the technique change in slow motion.
@@ -22,8 +22,8 @@ The morph/LBS hacks were needed only because we lacked the *real* rig. The corre
 
 ## CURRENT STATE / what to do NEXT
 We pivoted to running the pipeline **locally on the user's Windows 11 PC + RTX 5070 Ti (Blackwell, 16 GB VRAM)** (the HF Space is paused/billed). Execute, in order:
-1. **`PLAN_windows_pipeline_run.md`** — stand up the pipeline in **WSL2 Ubuntu** with **CUDA 12.8 + a `cu128` PyTorch** (Blackwell needs this; repo's cu121 won't run). Trimmed pipeline (SAM-3 + SAM-3D-Body + MoGe; Diffusion-VAS *off*; `batch_size=16` → fits 16 GB). Add a ~20-line hook to dump per-frame `pred_joint_coords (127,3)` + `pred_global_rots (127,3,3)` → `poses.npz` and the MHR rig (skin weights 18439×127, parents, rest, faces) → `mhr_rig.npz`. Run on `grip_front_1_cropped.mp4`.
-2. **`PLAN_blender_mhr_rig.md`** — build the 127-bone MHR armature in Blender, bind the mesh with the skin weights, key the per-frame poses → the final rigged animation.
+1. **`glb_joint_viewer/PLAN_windows_pipeline_run.md`** — stand up the pipeline in **WSL2 Ubuntu** with **CUDA 12.8 + a `cu128` PyTorch** (Blackwell needs this; repo's cu121 won't run). Trimmed pipeline (SAM-3 + SAM-3D-Body + MoGe; Diffusion-VAS *off*; `batch_size=16` → fits 16 GB). Add a ~20-line hook to dump per-frame `pred_joint_coords (127,3)` + `pred_global_rots (127,3,3)` → `poses.npz` and the MHR rig (skin weights 18439×127, parents, rest, faces) → `mhr_rig.npz`. Run on `grip_front_1_cropped.mp4`.
+2. **`glb_joint_viewer/PLAN_blender_mhr_rig.md`** — build the 127-bone MHR armature in Blender, bind the mesh with the skin weights, key the per-frame poses → the final rigged animation.
 
 It starts with a **Stage −1** ("when the session reopens on Windows"): verify `nvidia-smi`/WSL2, `git clone`, locate video + `HF_TOKEN`, confirm Blender+MCP.
 
@@ -37,7 +37,7 @@ It starts with a **Stage −1** ("when the session reopens on Windows"): verify 
 
 ## Repos & assets
 - GitHub (work tracked here): **https://github.com/magic-word/sam-body4d** (`origin`). HF Space deploy remote: `hf` → `troutmoose/sam-body4d` (paused).
-- This folder `glb_joint_viewer/`: `gripA.glb`/`gripB.glb` (source MHR-template meshes), `index.html` viewer, `renders/`, the Blender scenes (`*.blend`), `analysis/` (scripts + `data/` JSONs + its own README; `restore_to_tmp.sh` rehydrates the analysis), `STATUS_REPORT.md` (the validated report), the two `PLAN_*.md` runbooks, and this HANDOFF.
+- This folder `glb_joint_viewer/`: `gripA.glb`/`gripB.glb` (source MHR-template meshes), `index.html` viewer, `renders/`, the Blender scenes (`*.blend`), `analysis/` (scripts + `data/` JSONs + its own README; `restore_to_tmp.sh` rehydrates the analysis), `STATUS_REPORT.md` (the validated report), and the two `PLAN_*.md` runbooks. (This HANDOFF lives at the repo root.)
 - Source video (NOT in repo): `grip_front_1_cropped.mp4` — 1080p, 30 fps, 253 frames, single person.
 - Pipeline entry: `scripts/offline_app.py`; config `configs/body4d.yaml`; checkpoints via `scripts/setup.py`; per-frame params already collected in `utils/mesh_export.py` (`PersonExportData`); MHR model loaded in `models/sam_3d_body/.../mhr_head.py`.
 
