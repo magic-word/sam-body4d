@@ -1,0 +1,4 @@
+# Track only the single source grip video; ignore any other (large) videos dropped here.
+*
+!.gitignore
+!grip_front_1_cropped.mp4
