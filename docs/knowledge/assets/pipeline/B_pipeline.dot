@@ -1,0 +1,42 @@
+digraph pipeline {
+  rankdir=LR; bgcolor="white"; compound=true;
+  node [shape=box, style="rounded,filled", fillcolor="#eef3fb", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9];
+
+  V [label="data/grip_AB_trimmed.mp4", shape=note, fillcolor="#fff6cc"];
+
+  subgraph cluster_cpu0 {
+    label="CPU / host RAM — decode"; style=filled; color="#aaaaaa"; fillcolor="#f7f7f7";
+    DEC [label="cv2.VideoCapture · decord\nffmpeg libavcodec -> RGB frames"];
+  }
+  subgraph cluster_gpu {
+    label="GPU — VRAM resident (Blackwell sm_120)"; style=filled; color="#e0a35c"; fillcolor="#fff6ea";
+    SAM3 [label="SAM-3 propagate_in_video\nViT + memory-attention\ncuDNN conv · cuBLAS GEMM · flash-attn"];
+    MOGE [label="MoGe-2 ViT-L\nFOV / camera intrinsics"];
+    DET  [label="detectron2 ViTDet (init bbox)\ncustom CUDA: nms, roi_align"];
+    S3DB [label="SAM-3D-Body\nDINOv3 ViT -> decoder -> MHRHead.proj (FFN)"];
+    MHR  [label="TorchScript MHR (self.mhr)\nlinear-blend skinning + roma quat->rotmat\nverts (18439x3) + skel_state (127)"];
+  }
+  MASKS [label="per-frame masks (CPU)", fillcolor="#f7f7f7"];
+  subgraph cluster_cpu1 {
+    label="CPU / host RAM — export hook (NEW)"; style=filled; color="#7bb37b"; fillcolor="#f2fbf3";
+    ACC [label="collect_frame_data\n-> PersonExportData"];
+    NPZ [label="np.savez poses.npz\njoint_coords (F,127,3)\nglobal_rots (F,127,3,3)"];
+    RIG [label="probe self.mhr buffers\n-> mhr_rig.npz\n(weights 18439x127, parents, rest, faces)", fillcolor="#fde8e8"];
+    GLB [label="pygltflib -> baked-vertex GLB"];
+  }
+  subgraph cluster_wingpu {
+    label="Windows-native — Blender (via MCP)"; style=filled; color="#9bbce8"; fillcolor="#eef4fc";
+    BLND [label="bpy: 127-bone MHR armature\n+ vertex-group weights + per-frame keyframes\nGPU viewport / Cycles-OptiX"];
+  }
+
+  V -> DEC;
+  DEC -> SAM3 [label="H2D cudaMemcpyAsync (PCIe DMA)"];
+  SAM3 -> MASKS [label="(masks>0).cpu().numpy() D2H"];
+  MASKS -> S3DB; MOGE -> S3DB; DET -> S3DB;
+  S3DB -> MHR;
+  MHR -> ACC [label="D2H per-person dict"];
+  ACC -> NPZ; ACC -> GLB;
+  MHR -> RIG [style=dashed, label="TorchScript named_buffers"];
+  NPZ -> BLND; RIG -> BLND; GLB -> BLND;
+}

@@ -1,0 +1,27 @@
+digraph git_lfs_model {
+  rankdir=LR; bgcolor="white";
+  node [shape=box, style="rounded,filled", fillcolor="#eef3fb", fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=9];
+
+  subgraph cluster_wt {
+    label="Working tree (what you edit/play)"; style=filled; color="#7bb37b"; fillcolor="#f3fbf5";
+    VID [label="grip_front_1_cropped.mp4\n~hundreds of MB of REAL bytes", fillcolor="#fff6cc"];
+  }
+  subgraph cluster_repo {
+    label="Local Git repo (.git)"; style=filled; color="#9bbce8"; fillcolor="#f5f9ff";
+    GATTR [label=".gitattributes\n*.mp4 filter=lfs diff=lfs merge=lfs -text"];
+    PTR  [label="pointer file (~130 bytes)\nversion + oid sha256:... + size\nTHIS tiny text is what Git commits"];
+    LFSC [label=".git/lfs/objects/\nlocal LFS cache (real bytes, by oid)"];
+  }
+  subgraph cluster_remote {
+    label="Remotes"; style=filled; color="#e0a35c"; fillcolor="#fff6ea";
+    GH   [label="Git remote (GitHub)\ncommits + pointer files only"];
+    LFSS [label="LFS store\nreal blobs, keyed by oid"];
+  }
+
+  VID -> PTR  [label="clean filter on `git add`\n(swaps bytes -> pointer)"];
+  VID -> LFSC [label="real bytes cached locally", style=dashed];
+  GATTR -> PTR [style=dotted, label="rule that triggers LFS"];
+  PTR  -> GH   [label="git push (tiny)"];
+  LFSC -> LFSS [label="git lfs push (uploads blob)"];
+}

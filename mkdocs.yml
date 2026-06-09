@@ -1,0 +1,53 @@
+site_name: SAM-Body4D Knowledge Base
+site_description: Domain technical notes (reading-layer bake-off)
+docs_dir: docs/knowledge
+site_dir: site
+exclude_docs: |
+  _TEMPLATE.md
+  assets/**/README.md
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+
+nav:
+  - Home: README.md
+  - Windows GPU architecture: windows_gpu_architecture_notes.md
+  - SAM-Body4D inference pipeline: sam_body4d_inference_pipeline.md
+  - Dev environment & data flow: dev_environment_and_data.md
+  - Worked example — source embedding: worked_example_source_embedding.md
+  - Reading-layer evaluation: READING_LAYER_EVALUATION.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search
+
+extra_css:
+  - stylesheets/extra.css

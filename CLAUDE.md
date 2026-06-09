@@ -185,3 +185,21 @@ Skills use `python3` helper scripts instead of raw `curl` to avoid piping and JS
 Python 3.12, PyTorch with CUDA, key packages: `gradio~=6.0`, `omegaconf`, `opencv-python`, `decord` (Linux-only wheels), `transformers`, `diffusers==0.29.1`, `pyrender`, `roma`, `einops`. Full list in `pyproject.toml`.
 
 `decord` has no macOS ARM wheels — `uv run python` will fail on Apple Silicon. Use the Docker container or Linux for full pipeline execution.
+
+## Knowledge base (`docs/knowledge/`)
+
+Durable, domain-specific technical notes live in `docs/knowledge/` (one markdown file per domain), committed
+to the git remote. Index: `docs/knowledge/README.md` (auto-generated). Template + conventions: `_TEMPLATE.md`.
+
+- **Standing instruction:** after substantively exploring or deciding something about a domain (GPU
+  virtualization, the SAM-Body4D pipeline, mocap tools, networking, research topics, …), create or update
+  its `docs/knowledge/` doc via the **`knowledge-curator`** skill, then run `python scripts/kb.py build`
+  (render diagrams + rebuild index + linkcheck) and fix any broken links.
+- **Conventions:** verification legend `[V]`/`[D]`/`[I]`/`[M]` on claims; **citations show the full URL as
+  the link text** + a `retrieved YYYY-MM-DD` date (never a bare domain); diagrams are Graphviz `.dot` + PNG
+  under `assets/<topic>/`; embed source material via the four representations in
+  `worked_example_source_embedding.md`; snapshot a page's original styling with
+  `python scripts/kb.py capture <url>` (monolith → `sources/*.html`).
+- **Assets:** small/text-derived images → git; large media and `sources/*.html` → git-ignored, stored
+  locally and mirrored to GCS (`python scripts/kb.py backup <bucket>`).
+- **Preview:** `python -m mkdocs serve` → http://127.0.0.1:8000 (Obsidian/Foam open the same files locally).

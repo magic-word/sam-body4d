@@ -1,0 +1,25 @@
+/* Distinguish EXTERNAL links (light-orange highlight) from INTERNAL/self links (default theme blue).
+   External links are absolute http(s):// URLs; internal cross-doc links are relative, so they are
+   unaffected. localhost/127.0.0.1 (the served site itself) is treated as internal. */
+
+:root {
+  --ext-link-color: #b45309;            /* dark orange text — readable on light theme */
+  --ext-link-bg: rgba(245, 158, 11, 0.16);
+  --ext-link-bg-hover: rgba(245, 158, 11, 0.30);
+}
+[data-md-color-scheme="slate"] {
+  --ext-link-color: #fbbf24;            /* lighter orange — readable on dark theme */
+  --ext-link-bg: rgba(245, 158, 11, 0.22);
+  --ext-link-bg-hover: rgba(245, 158, 11, 0.38);
+}
+
+.md-typeset a[href^="http"]:not([href*="127.0.0.1"]):not([href*="localhost"]) {
+  color: var(--ext-link-color);
+  background-color: var(--ext-link-bg);
+  padding: 0 0.18em;
+  border-radius: 3px;
+  text-decoration-color: var(--ext-link-color);
+}
+.md-typeset a[href^="http"]:not([href*="127.0.0.1"]):not([href*="localhost"]):hover {
+  background-color: var(--ext-link-bg-hover);
+}

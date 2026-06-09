@@ -1,0 +1,38 @@
+digraph mhr_internals {
+  rankdir=TB; bgcolor="white";
+  node [shape=box, style="rounded,filled", fillcolor="#eef3fb", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9];
+
+  TOK    [label="pose token x [B,C]\n(from DINOv3 decoder)"];
+  PROJ   [label="MHRHead.proj FFN\n-> pred [B, npose=601]"];
+  SPLIT  [label="split: global_rot6d · body_cont(260)\nshape(45) · scale(28) · hand(108) · face(72)"];
+  CONV   [label="rot6d_to_rotmat · roma euler\ncompact_cont_to_model_params_body"];
+  MODELP [label="model_params [B,127(+scales)]"];
+
+  subgraph cluster_jit {
+    label="self.mhr — TorchScript (torch.jit.load mhr_model.pt), GPU";
+    style=filled; color="#e0a35c"; fillcolor="#fff6ea";
+    JIT  [label="mhr(shape_params, model_params, expr)"];
+    SKIN [label="linear-blend skinning\nskin_weights (18439x127) @ joint xforms"];
+    SKEL [label="skel_state -> joint_coords(127,3)\n+ joint_quats -> roma unitquat_to_rotmat"];
+  }
+
+  VERTS  [label="pred_vertices (18439,3) /100"];
+  JC     [label="pred_joint_coords (127,3)"];
+  GR     [label="joint_global_rots (127,3,3)"];
+  FLIP   [label="verts[...,[1,2]] *= -1 (camera frame)"];
+  OUT    [label="per-person output dict", fillcolor="#fff6cc"];
+  ACC    [label="collect_frame_data -> PersonExportData"];
+  POSES  [label="poses.npz (per-frame coords+rots)", fillcolor="#f2fbf3"];
+  GLBOUT [label="baked-vertex GLB", fillcolor="#f2fbf3"];
+  RIGNPZ [label="mhr_rig.npz\nweights 18439x127 · parents · rest · faces(36874,3)", fillcolor="#fde8e8"];
+
+  TOK -> PROJ -> SPLIT -> CONV -> MODELP -> JIT;
+  JIT -> SKIN; JIT -> SKEL;
+  SKIN -> VERTS -> FLIP -> OUT;
+  SKEL -> JC -> OUT;
+  SKEL -> GR -> OUT;
+  OUT -> ACC [label="export hook"];
+  ACC -> POSES; ACC -> GLBOUT;
+  JIT -> RIGNPZ [style=dashed, label="named_buffers probe (one-shot)"];
+}

@@ -1,0 +1,30 @@
+digraph hw_stack {
+  rankdir=TB; bgcolor="white";
+  node [shape=box, style="rounded,filled", fillcolor="#eef3fb", fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=9];
+
+  subgraph cluster_win {
+    label="Windows 11 host (native)"; style=filled; color="#9bbce8"; fillcolor="#f5f9ff";
+    CC [label="Claude Code session\n(Git Bash / PowerShell)"];
+    BL [label="Blender 5.1 + MCP add-on\nbpy · EEVEE-Next / Cycles-OptiX"];
+    subgraph cluster_drv {
+      label="NVIDIA WDDM driver 591.74"; color="#6f9fdc"; fillcolor="#eaf1fb";
+      DXGK [label="dxgkrnl.sys\n(DirectX graphics kernel)"];
+      NVK  [label="nvlddmkm.sys\n(kernel-mode driver)"];
+    }
+  }
+  subgraph cluster_wsl {
+    label="WSL2 — Ubuntu 24.04 (Hyper-V lightweight VM)"; style=filled; color="#7bb37b"; fillcolor="#f3fbf5";
+    PY      [label="Python 3.12 venv\nPyTorch cu128 · ATen · cuDNN/cuBLAS"];
+    LIBCUDA [label="libcuda.so + libdxcore.so\n(/usr/lib/wsl/lib — WSL stubs)"];
+    DXG     [label="/dev/dxg\n(dxgkrnl Linux driver)"];
+  }
+  GPU [label="RTX 5070 Ti — Blackwell sm_120\n16 GB GDDR7 · 5th-gen Tensor Cores", fillcolor="#ffe9cc"];
+
+  CC -> PY  [label="wsl bash -lc"];
+  CC -> BL  [label="MCP TCP socket (localhost)"];
+  PY -> LIBCUDA -> DXG;
+  DXG -> DXGK [label="VMBus paravirt (GPU-PV)"];
+  DXGK -> NVK -> GPU;
+  BL -> NVK [label="Vulkan/OpenGL/OptiX (native, no VM)"];
+}

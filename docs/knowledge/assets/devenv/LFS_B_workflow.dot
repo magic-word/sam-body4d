@@ -1,0 +1,29 @@
+digraph git_lfs_flow {
+  rankdir=LR; bgcolor="white";
+  node [shape=box, style="rounded,filled", fillcolor="#eef3fb", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9];
+
+  subgraph cluster_mac {
+    label="Mac (author)"; style=filled; color="#7bb37b"; fillcolor="#f3fbf5";
+    A1 [label="git lfs install\n(register clean/smudge filters — once per machine)"];
+    A2 [label="git lfs track \"*.mp4\"\n-> writes .gitattributes"];
+    A3 [label="git add data/video.mp4\ngit commit   (pointer is committed)"];
+    A4 [label="git push\npointer -> GitHub · blob -> LFS store"];
+  }
+  subgraph cluster_srv {
+    label="GitHub + LFS store"; style=filled; color="#e0a35c"; fillcolor="#fff6ea";
+    S [label="Git: commits + pointers\nLFS: blobs keyed by oid"];
+  }
+  subgraph cluster_win {
+    label="Windows PC (this machine)"; style=filled; color="#9bbce8"; fillcolor="#f5f9ff";
+    W1 [label="git lfs install (once)"];
+    W2 [label="git clone / git pull\n-> pointers arrive via Git"];
+    W3 [label="smudge filter (auto) or `git lfs pull`\n-> downloads blobs by oid"];
+    W4 [label="data/video.mp4 reconstituted\n(real bytes in working tree)", fillcolor="#fff6cc"];
+  }
+
+  A1 -> A2 -> A3 -> A4 -> S;
+  W1 -> W2 -> W3 -> W4;
+  S -> W2 [label="git fetch"];
+  S -> W3 [label="blob fetch by oid", style=dashed, constraint=false];
+}

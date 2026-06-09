@@ -1,0 +1,22 @@
+digraph gpu_op {
+  rankdir=LR; bgcolor="white";
+  node [shape=box, style="rounded,filled", fillcolor="#eef3fb", fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=9];
+  label="bf16/tf32 tensor-core path — data stays in VRAM until .cpu() forces D2H";
+  labelloc="t"; fontname="Helvetica"; fontsize=10;
+
+  AT  [label="PyTorch ATen\n(Python, WSL2)"];
+  CU  [label="libcuda.so\n(WSL stub)"];
+  DX  [label="/dev/dxg + dxgkrnl\n(Linux)"];
+  VB  [label="VMBus\n(Hyper-V)"];
+  HK  [label="Host dxgkrnl.sys\n+ nvlddmkm"];
+  GPU [label="RTX 5070 Ti\nsm_120 tensor cores", fillcolor="#ffe9cc"];
+
+  AT -> CU  [label="cudaLaunchKernel / cublasGemmEx"];
+  CU -> DX  [label="ioctl submit cmd buffer"];
+  DX -> VB  [label="paravirt packet"];
+  VB -> HK  [label="forward to WDDM scheduler"];
+  HK -> GPU [label="DMA over PCIe + SASS exec"];
+  GPU -> HK [label="completion fence (interrupt)", style=dashed, color="#888888"];
+  HK -> AT  [label="async stream callback", style=dashed, color="#888888", constraint=false];
+}
