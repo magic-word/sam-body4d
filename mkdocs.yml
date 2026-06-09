@@ -29,6 +29,7 @@ theme:
 nav:
   - Home: README.md
   - Windows GPU architecture: windows_gpu_architecture_notes.md
+  - GPU runtimes (native/WSL2/Docker): gpu_runtimes_windows.md
   - SAM-Body4D inference pipeline: sam_body4d_inference_pipeline.md
   - Dev environment & data flow: dev_environment_and_data.md
   - Worked example — source embedding: worked_example_source_embedding.md

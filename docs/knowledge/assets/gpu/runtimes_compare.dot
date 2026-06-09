@@ -1,0 +1,30 @@
+digraph gpu_runtimes {
+  rankdir=TB; bgcolor="white";
+  node [shape=box, style="rounded,filled", fillcolor="#eef3fb", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9];
+
+  subgraph cluster_native {
+    label="A · Native Windows"; style=filled; color="#9bbce8"; fillcolor="#f5f9ff";
+    NW [label="Python (Windows)\nPyTorch cu128 wheels\nunsupported: decord / pyrender / detectron2", fillcolor="#fde8e8"];
+  }
+  subgraph cluster_wsl {
+    label="B · WSL2 + venv (our path)"; style=filled; color="#7bb37b"; fillcolor="#f3fbf5";
+    WV [label="Python venv — Ubuntu 24.04\nPyTorch cu128 + Linux-only deps"];
+    WL [label="libcuda.so stub\n/usr/lib/wsl/lib"];
+  }
+  subgraph cluster_docker {
+    label="C · WSL2 + Docker"; style=filled; color="#e0a35c"; fillcolor="#fff6ea";
+    DC [label="CUDA container\n(Dockerfile · docker run --gpus all)"];
+    NCT [label="NVIDIA Container Toolkit\n+ libcuda stub injected"];
+  }
+
+  DXG  [label="/dev/dxg  (dxgkrnl Linux driver)"];
+  HOST [label="Windows host driver\ndxgkrnl.sys + nvlddmkm.sys", fillcolor="#eaf1fb"];
+  GPU  [label="RTX 5070 Ti — Blackwell sm_120", fillcolor="#ffe9cc"];
+
+  NW  -> HOST [label="direct — no VM hop"];
+  WV  -> WL -> DXG;
+  DC  -> NCT -> DXG;
+  DXG -> HOST [label="VMBus / GPU-PV"];
+  HOST -> GPU;
+}

@@ -11,6 +11,7 @@ mirrored to GCS (see [Dev environment & data flow](dev_environment_and_data.md))
 |---|---|---|
 | [Reading-Layer Bake-off — evaluate 4 ways to browse these docs](READING_LAYER_EVALUATION.md) | — | — |
 | [Dev Environment & Data Flow — WSL2, Git-LFS, and asset storage](dev_environment_and_data.md) | active | 2026-06-08 |
+| [GPU Model-Runtime Architectures on Windows — native vs WSL2 vs Docker](gpu_runtimes_windows.md) | active | 2026-06-08 |
 | [SAM-Body4D Inference Pipeline — model & data-flow notes](sam_body4d_inference_pipeline.md) | active | 2026-06-08 |
 | [Windows GPU Architecture Notes — WSL2 / CUDA / Blackwell](windows_gpu_architecture_notes.md) | active | 2026-06-08 |
 | [Worked example — embedding source material alongside your notes](worked_example_source_embedding.md) | — | — |

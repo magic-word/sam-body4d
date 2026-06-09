@@ -110,7 +110,8 @@ host driver directly (no VM hop) for its viewport/Cycles-OptiX rendering. See th
 orchestration decision (where Claude Code itself runs). `[I]`
 
 ## 7. Open questions / to verify `[M]`
-- Confirm `/usr/lib/wsl/lib/libcuda.so` exists and `ldd` of torch resolves to it (once WSL is up).
+- `/usr/lib/wsl/lib/libcuda.so` — **confirmed present 2026-06-08** (`libcuda.so`, `.so.1`, `.so.1.1`); GPU
+  visible inside WSL2 via `nvidia-smi -L` (RTX 5070 Ti). `ldd`-of-torch resolution still pending torch install. `[V]`
 - Confirm the *installed* stable `cu128` torch reports `get_device_capability()==(12,0)`; if not, switch to nightly.
 - Measure whether VMBus submission latency materially affects our batch sizes (likely negligible at `batch_size≥16`).
 
@@ -127,3 +128,5 @@ orchestration decision (where Claude Code itself runs). `[I]`
   earlier overclaim that stable `cu128` definitely ships `sm_120` (now: verify-then-fallback). Added the
   "no Linux driver in WSL2" rule. Figures A (stack) and C (per-op path) rendered via Graphviz.
 - 2026-06-08 — Normalized citations to full-URL link text; made inline PyTorch refs clickable.
+- 2026-06-08 — On-machine verification in WSL2: Ubuntu 24.04.4 LTS, Python 3.12.3, RTX 5070 Ti visible via
+  `nvidia-smi -L`, `libcuda.so` stub present at `/usr/lib/wsl/lib/` → GPU-PV passthrough confirmed.
