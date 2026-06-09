@@ -1,0 +1,37 @@
+digraph pipeline_system {
+  rankdir=LR; bgcolor="white"; compound=true;
+  node [shape=box, style="rounded,filled", fillcolor="#eef3fb", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9];
+
+  V    [label="grip_AB_trimmed.mp4\n(LFS · assets/videos)", shape=note, fillcolor="#fff6cc"];
+  BBOX [label="centered bbox\n(human_detector=None —\nno detectron2)", fillcolor="#fde8e8"];
+
+  subgraph cluster_ckpt {
+    label="checkpoints  (~/checkpoints, HF gated ~10 GB)"; style=filled; color="#aaaaaa"; fillcolor="#f7f7f7";
+    CK [label="SAM-3 · SAM-3D-Body+MHR · MoGe-2"];
+  }
+
+  subgraph cluster_wsl {
+    label="WSL2 (Ubuntu 24.04) — venv · GPU via GPU-PV"; style=filled; color="#7bb37b"; fillcolor="#f3fbf5";
+    SAM3 [label="SAM-3\nvideo mask propagation"];
+    MOGE [label="MoGe-2\nFOV / camera intrinsics"];
+    S3DB [label="SAM-3D-Body → MHR\nper-frame mesh (18439v) + 127-joint pose"];
+    HOOK [label="export hook (offline_app.py)\nutils.mesh_export.collect_frame_data"];
+    OUT  [label="poses.npz · baked GLB\nmhr_rig.npz (best-effort)\n+ overlay MP4", shape=note, fillcolor="#f2fbf3"];
+  }
+
+  subgraph cluster_win {
+    label="Windows-native — Blender 5.1 (via MCP)"; style=filled; color="#9bbce8"; fillcolor="#eef4fc";
+    BL    [label="127-bone MHR armature\n+ skin weights + per-frame keyed poses"];
+    DELIV [label="rigged .blend + MP4\nright hand A→B ≈ 33.5°", shape=note, fillcolor="#ffe9cc"];
+  }
+
+  V    -> SAM3;
+  BBOX -> SAM3;
+  SAM3 -> S3DB [label="masks"];
+  MOGE -> S3DB [label="intrinsics"];
+  CK   -> S3DB [style=dashed, label="weights"];
+  S3DB -> HOOK -> OUT;
+  OUT  -> BL [label="copy via /mnt/c"];
+  BL   -> DELIV;
+}

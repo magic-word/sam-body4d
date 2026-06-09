@@ -1,0 +1,28 @@
+digraph cuda_execution {
+  rankdir=TB; bgcolor="white";
+  node [shape=box, style="rounded,filled", fillcolor="#eef3fb", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9];
+
+  subgraph cluster_sw {
+    label="Software (WSL2 venv)"; style=filled; color="#7bb37b"; fillcolor="#f3fbf5";
+    OP   [label="PyTorch op — e.g. DINOv3 attention,\nMHRHead GEMM, LBS  (bf16 / tf32)"];
+    ATEN [label="ATen dispatch"];
+    LIBS [label="cuDNN · cuBLAS · flash-attn\n(SASS kernels compiled for sm_120)"];
+    RT   [label="CUDA Runtime → cudaLaunchKernel /\ncublasGemmEx / cudaMemcpyAsync"];
+    DRV  [label="libcuda.so  (Driver API — WSL stub)"];
+  }
+
+  PASS [label="/dev/dxg → VMBus → Windows host driver (GPU-PV)\nsee windows_gpu_architecture_notes", fillcolor="#eaf1fb"];
+
+  subgraph cluster_gpu {
+    label="RTX 5070 Ti — Blackwell sm_120"; style=filled; color="#e0a35c"; fillcolor="#fff6ea";
+    SCHED [label="GigaThread scheduler\ngrid → thread blocks → warps (32 threads)"];
+    SM    [label="Streaming Multiprocessors\nCUDA cores + 5th-gen Tensor Cores (MMA)"];
+    MEM   [label="per-SM: registers · L1 / shared mem → L2 cache"];
+    VRAM  [label="16 GB GDDR7 — global memory / VRAM", fillcolor="#ffe9cc"];
+  }
+
+  OP -> ATEN -> LIBS -> RT -> DRV -> PASS -> SCHED;
+  SCHED -> SM -> MEM -> VRAM [label="loads / stores"];
+  VRAM -> SM [style=dashed, label="H2D inputs staged here;\nresults held until .cpu() → D2H"];
+}
