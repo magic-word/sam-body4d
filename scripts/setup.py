@@ -247,28 +247,11 @@ def print_manual_hints(ckpt_root: Path) -> None:
 # Specs (edit here)
 # -------------------------
 def build_specs() -> tuple[list[URLFile], list[HFRepoDir], list[HFFile]]:
-    url_files = [
-        URLFile(
-            name="Depth Anything v2 (vitl)",
-            url="https://huggingface.co/depth-anything/Depth-Anything-V2-Large/resolve/main/depth_anything_v2_vitl.pth?download=true",
-            rel_out="depth_anything_v2_vitl.pth",
-        ),
-    ]
+    # Depth-Anything + Diffusion-VAS are only used by occlusion completion, which is disabled
+    # (completion.enable=false) for our clean single-subject clip — skip to save ~5 GB / time.
+    url_files = []
 
-    repo_dirs = [
-        HFRepoDir(
-            name="Diffusion-VAS amodal segmentation",
-            repo_id="kaihuac/diffusion-vas-amodal-segmentation",
-            rel_out_dir="diffusion-vas-amodal-segmentation",
-            gated=False,
-        ),
-        HFRepoDir(
-            name="Diffusion-VAS content completion",
-            repo_id="kaihuac/diffusion-vas-content-completion",
-            rel_out_dir="diffusion-vas-content-completion",
-            gated=False,
-        ),
-    ]
+    repo_dirs = []
 
     hf_files = [
         HFFile(
